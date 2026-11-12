@@ -137,6 +137,18 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
 
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
+/* ── Aviso antes do WhatsApp ── */
+.modal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(42,29,20,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.modal.open{opacity:1;visibility:visible}
+.modal-box{width:min(440px,100%);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 26px 22px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35);transform:translateY(18px) scale(.97);transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.modal.open .modal-box{transform:none}
+.modal-box h2{font-size:26px;margin:10px 0 12px}
+.modal-box p{color:var(--soft);font-size:16px}
+.modal-box p b{color:var(--ink)}
+.modal-box .btn{display:block;margin-top:22px;font-size:15px;padding:16px 18px}
+.modal-back{margin-top:12px;background:none;border:0;font:inherit;font-size:14px;color:var(--soft);text-decoration:underline;cursor:pointer;padding:8px}
+.modal-back:focus-visible{outline:3px solid var(--btn);outline-offset:2px}
+
 /* ── Botão fixo no celular ── */
 .sticky{display:none}
 
@@ -309,6 +321,18 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
 
 <div class="sticky" id="sticky"><a class="btn" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR</a></div>
 
+<!-- Aviso antes do WhatsApp -->
+<div class="modal" id="aviso" role="dialog" aria-modal="true" aria-labelledby="avisoT" aria-hidden="true">
+ <div class="modal-box">
+  <div class="eyebrow">Antes de ir para o WhatsApp</div>
+  <h2 id="avisoT">O procedimento não é gratuito</h2>
+  <p>Como paciente modelo, você <b>não paga a aplicação do profissional</b>. Você paga <b>apenas o custo do material</b> utilizado no seu procedimento.</p>
+  <p style="margin-top:10px;font-size:14px">O valor é informado pelo WhatsApp, depois da avaliação do seu caso.</p>
+  <a class="btn" data-wa="1" data-confirm="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">ENTENDI, IR PARA O WHATSAPP</a>
+  <button class="modal-back" id="avisoX" type="button">Voltar para a página</button>
+ </div>
+</div>
+
 <script>
 /* ── Botão de som do vídeo ── */
 (function(){
@@ -392,9 +416,17 @@ K.forEach(function(k){var v=q.get(k)||saved[k];if(v)T[k]=v});sessionStorage.setI
 var anuncio=T.utm_content||T.utm_campaign||'';
 var msg='Oi, '+(anuncio?'vim pelo anúncio '+anuncio+' e ':'')+'quero me candidatar a paciente modelo na imersão de 5 e 6 de dezembro.\n\nProcedimento de interesse: \nMinha cidade: ';
 var NUM='553196926557';
+var M=document.getElementById('aviso'),X=document.getElementById('avisoX'),last=null;
+function openAviso(from){last=from;M.classList.add('open');M.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';var b=M.querySelector('.btn');if(b)setTimeout(function(){b.focus()},60)}
+function closeAviso(){if(!M)return;M.classList.remove('open');M.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';if(last){try{last.focus()}catch(e){}}}
+if(M){M.addEventListener('click',function(e){if(e.target===M)closeAviso()});if(X)X.addEventListener('click',closeAviso);document.addEventListener('keydown',function(e){if(e.key==='Escape'&&M.classList.contains('open'))closeAviso()})}
 document.querySelectorAll('a[data-wa]').forEach(function(a){
 a.href='https://wa.me/'+NUM+'?text='+encodeURIComponent(msg);
-a.addEventListener('click',function(){try{fbq('track','Contact',{content_name:'Paciente Modelo dezembro'});fbq('trackCustom','LeadWhatsApp',{content_name:'Paciente Modelo dezembro',utm_content:T.utm_content||'',utm_campaign:T.utm_campaign||''})}catch(e){}})});
+if(a.hasAttribute('data-confirm')){
+a.addEventListener('click',function(){try{fbq('track','Contact',{content_name:'Paciente Modelo dezembro'});fbq('trackCustom','LeadWhatsApp',{content_name:'Paciente Modelo dezembro',utm_content:T.utm_content||'',utm_campaign:T.utm_campaign||''})}catch(e){}closeAviso()})
+}else{
+a.addEventListener('click',function(ev){if(!M)return;ev.preventDefault();openAviso(a);try{fbq('trackCustom','AvisoCustoAberto',{content_name:'Paciente Modelo dezembro'})}catch(e){}})
+}});
 })();
 </script>
 </body>
