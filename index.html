@@ -55,8 +55,11 @@ h2{font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:16px}
 .hero-photo img{width:100%;aspect-ratio:1/1;object-fit:cover}
 .cap{font-size:13px;color:var(--soft);margin-top:10px;text-align:center}
 .cap a{color:var(--btn);font-weight:600}
-.hero-video{border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(60,40,20,.25);background:#000}
+.hero-video{border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(60,40,20,.25);background:#000;position:relative}
 .hero-video video{display:block;width:100%;border-radius:14px}
+.sound-btn{position:absolute;bottom:14px;right:14px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;z-index:2}
+.sound-btn:hover{background:rgba(0,0,0,.75);transform:scale(1.08)}
+.sound-btn:active{transform:scale(.95)}
 
 /* 2. Resultados */
 .results{background:var(--card);border-block:1px solid var(--line)}
@@ -141,7 +144,6 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
  section{padding:52px 0}
  .hero{padding:32px 0 44px}
  .hero-grid,.split{grid-template-columns:1fr;gap:22px}
- .hero-grid>figure{order:-1}
  .hero h1{margin:10px 0 14px;font-size:clamp(28px,7vw,40px)}
  .hero .sub{font-size:15px;margin-bottom:14px}
  .facts{margin-bottom:18px;gap:6px}.facts li{font-size:12px;padding:6px 12px}
@@ -203,7 +205,7 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
    <p class="micro reveal reveal-d3">Você fala com a nossa assistente pelo WhatsApp.</p>
   </div>
   <figure class="reveal reveal-d1">
-   <div class="hero-video"><video controls loop playsinline preload="auto" poster="paciente-modelo.jpg"><source src="video.mp4" type="video/mp4"/>Seu navegador não suporta vídeo.</video></div>
+   <div class="hero-video"><video id="heroVid" autoplay loop muted playsinline preload="auto" poster="paciente-modelo.jpg"><source src="video.mp4" type="video/mp4"/>Seu navegador não suporta vídeo.</video><button class="sound-btn" id="soundBtn" aria-label="Ativar som" title="Ativar som">🔇</button></div>
    <figcaption class="cap">Resultado real, realizado durante o curso.</figcaption>
   </figure>
  </div>
@@ -308,6 +310,18 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
 <div class="sticky" id="sticky"><a class="btn" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR</a></div>
 
 <script>
+/* ── Botão de som do vídeo ── */
+(function(){
+ var v=document.getElementById('heroVid'),b=document.getElementById('soundBtn');
+ if(!v||!b)return;
+ b.addEventListener('click',function(){
+  v.muted=!v.muted;
+  b.textContent=v.muted?'🔇':'🔊';
+  b.setAttribute('aria-label',v.muted?'Ativar som':'Desativar som');
+  b.setAttribute('title',v.muted?'Ativar som':'Desativar som');
+ });
+})();
+
 /* ── Reveal: fade-up ao entrar na tela ── */
 (function(){
  if(!('IntersectionObserver' in window))return;
