@@ -408,26 +408,74 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
 <!-- Pixel e UTMs -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','28204701035866392');fbq('track','PageView');
 (function(){
-var K=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'],T={};
+var PIXEL='28204701035866392',NOME='Paciente Modelo dezembro',T0=Date.now();
+function uid(){try{if(crypto.randomUUID)return crypto.randomUUID()}catch(e){}return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)})}
+function ck(n){var m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):''}
+function setCk(n,v,d){try{document.cookie=n+'='+encodeURIComponent(v)+';max-age='+d*86400+';path=/;SameSite=Lax'+(location.protocol==='https:'?';Secure':'')}catch(e){}}
+
+/* UTMs e fbclid: URL > sessão */
+var K=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','fbclid'],T={};
 try{var q=new URLSearchParams(location.search),saved={};try{saved=JSON.parse(sessionStorage.getItem('pm_utm')||'{}')}catch(e){}
 K.forEach(function(k){var v=q.get(k)||saved[k];if(v)T[k]=v});sessionStorage.setItem('pm_utm',JSON.stringify(T))}catch(e){}
+
+/* Clique do anúncio (_fbc): garante o cookie quando o fbclid vem na URL */
+try{if(T.fbclid&&!ck('_fbc'))setCk('_fbc','fb.1.'+Date.now()+'.'+T.fbclid,90)}catch(e){}
+
+/* ID anônimo do visitante (external_id): melhora a correspondência entre visita e conversão */
+var EID='';try{EID=localStorage.getItem('pm_eid')||ck('pm_eid');if(!EID){EID=uid()}localStorage.setItem('pm_eid',EID)}catch(e){EID=EID||ck('pm_eid')||uid()}
+setCk('pm_eid',EID,365);
+
+/* Visita: primeira ou retorno */
+var visitas=1;try{visitas=(parseInt(localStorage.getItem('pm_v')||'0',10)||0)+(sessionStorage.getItem('pm_s')?0:1);localStorage.setItem('pm_v',visitas);sessionStorage.setItem('pm_s','1')}catch(e){}
+
+var ref='';try{ref=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
+var base={
+ content_name:NOME,content_category:'Paciente Modelo',content_type:'landing_page',
+ evento_data:'5 e 6 de dezembro',evento_local:'Cidade Jardim, Sao Paulo',
+ utm_source:T.utm_source||'',utm_medium:T.utm_medium||'',utm_campaign:T.utm_campaign||'',utm_content:T.utm_content||'',utm_term:T.utm_term||'',utm_id:T.utm_id||'',
+ origem_clique_meta:T.fbclid?'sim':'nao',referrer_host:ref,
+ pagina:location.hostname+location.pathname,
+ dispositivo:window.matchMedia&&window.matchMedia('(max-width:860px)').matches?'mobile':'desktop',
+ idioma:navigator.language||'',visita_numero:visitas,tipo_visita:visitas>1?'retorno':'primeira'
+};
+function P(extra){var o={},k;for(k in base)if(base[k]!==''&&base[k]!=null)o[k]=base[k];for(k in extra||{})if(extra[k]!==''&&extra[k]!=null)o[k]=extra[k];return o}
+function ev(tipo,nome,extra){try{fbq(tipo,nome,P(extra),{eventID:nome+'.'+uid()})}catch(e){}}
+
+/* Maior rolagem e uso do vídeo, para enviar junto com a conversão */
+var maxScroll=0,somLigado='nao';
+function sc(){var h=document.documentElement,t=h.scrollHeight-window.innerHeight;if(t>0)maxScroll=Math.max(maxScroll,Math.min(100,Math.round((window.pageYOffset||h.scrollTop)/t*100)))}
+window.addEventListener('scroll',sc,{passive:true});sc();
+var sb=document.getElementById('soundBtn');if(sb)sb.addEventListener('click',function(){somLigado='sim'});
+function engaj(){return{segundos_na_pagina:Math.round((Date.now()-T0)/1000),rolagem_max_pct:maxScroll,video_com_som:somLigado}}
+
+fbq('init',PIXEL,{external_id:EID});
+ev('track','PageView');
+
 var anuncio=T.utm_content||T.utm_campaign||'';
 var msg='Oi, '+(anuncio?'vim pelo anúncio '+anuncio+' e ':'')+'quero me candidatar a paciente modelo na imersão de 5 e 6 de dezembro.\n\nProcedimento de interesse: \nMinha cidade: ';
 var NUM='553196926557';
-var M=document.getElementById('aviso'),X=document.getElementById('avisoX'),last=null;
+var M=document.getElementById('aviso'),X=document.getElementById('avisoX'),last=null,posBotao='',indo=false;
+function posicao(a){return a.closest('.sticky')?'fixo_celular':a.closest('.hero')?'topo':a.closest('.closing')?'fechamento':a.closest('.dark')?'meio':'outro'}
 function openAviso(from){last=from;M.classList.add('open');M.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';var b=M.querySelector('.btn');if(b)setTimeout(function(){b.focus()},60)}
 function closeAviso(){if(!M)return;M.classList.remove('open');M.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';if(last){try{last.focus()}catch(e){}}}
-if(M){M.addEventListener('click',function(e){if(e.target===M)closeAviso()});if(X)X.addEventListener('click',closeAviso);document.addEventListener('keydown',function(e){if(e.key==='Escape'&&M.classList.contains('open'))closeAviso()})}
+if(M){M.addEventListener('click',function(e){if(e.target===M){ev('trackCustom','AvisoCustoFechado',Object.assign({botao_posicao:posBotao},engaj()));closeAviso()}});
+ if(X)X.addEventListener('click',function(){ev('trackCustom','AvisoCustoFechado',Object.assign({botao_posicao:posBotao},engaj()));closeAviso()});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&M.classList.contains('open'))closeAviso()})}
 document.querySelectorAll('a[data-wa]').forEach(function(a){
 a.href='https://wa.me/'+NUM+'?text='+encodeURIComponent(msg);
 if(a.hasAttribute('data-confirm')){
-a.addEventListener('click',function(){try{fbq('track','Contact',{content_name:'Paciente Modelo dezembro'});fbq('trackCustom','LeadWhatsApp',{content_name:'Paciente Modelo dezembro',utm_content:T.utm_content||'',utm_campaign:T.utm_campaign||''})}catch(e){}closeAviso()})
+a.addEventListener('click',function(e){
+ var extra=Object.assign({botao_posicao:posBotao||'aviso',botao_texto:'ENTENDI, IR PARA O WHATSAPP',destino:'whatsapp',aviso_custo_confirmado:'sim'},engaj());
+ ev('track','Contact',extra);ev('trackCustom','LeadWhatsApp',extra);
+ /* dá tempo de o evento sair antes de trocar de página */
+ if(!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&a.target!=='_blank'){e.preventDefault();if(indo)return;indo=true;var u=a.href;setTimeout(function(){indo=false;closeAviso();location.href=u},350)}else closeAviso()})
 }else{
-a.addEventListener('click',function(ev){if(!M)return;ev.preventDefault();openAviso(a);try{fbq('trackCustom','AvisoCustoAberto',{content_name:'Paciente Modelo dezembro'})}catch(e){}})
+a.addEventListener('click',function(e){if(!M)return;e.preventDefault();posBotao=posicao(a);openAviso(a);
+ ev('trackCustom','AvisoCustoAberto',Object.assign({botao_posicao:posBotao,botao_texto:(a.textContent||'').trim()},engaj()))})
 }});
 })();
 </script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=28204701035866392&amp;ev=PageView&amp;noscript=1"/></noscript>
 </body>
 </html>
