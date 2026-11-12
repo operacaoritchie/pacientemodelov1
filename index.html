@@ -322,6 +322,27 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
  });
 })();
 
+/* ── Carrossel automático no celular ── */
+(function(){
+ var c=document.getElementById('cases');
+ if(!c||!window.matchMedia)return;
+ if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+ var mq=window.matchMedia('(max-width:860px)'),cards=c.querySelectorAll('.case'),onScreen=false,hold=0,T=3000;
+ function center(el){var r=el.getBoundingClientRect();return r.left+r.width/2}
+ function current(){var cr=c.getBoundingClientRect(),m=cr.left+cr.width/2,b=0,d=1e9;
+  for(var i=0;i<cards.length;i++){var x=Math.abs(center(cards[i])-m);if(x<d){d=x;b=i}}return b}
+ function go(i){var el=cards[i],cr=c.getBoundingClientRect(),r=el.getBoundingClientRect();
+  c.scrollTo({left:c.scrollLeft+(r.left-cr.left)-(cr.width-r.width)/2,behavior:'smooth'})}
+ function pause(){hold=Date.now()+6000}
+ ['touchstart','pointerdown','wheel'].forEach(function(e){c.addEventListener(e,pause,{passive:true})});
+ if('IntersectionObserver' in window)new IntersectionObserver(function(e){onScreen=e[0].isIntersecting},{threshold:.4}).observe(c);
+ else onScreen=true;
+ setInterval(function(){
+  if(!mq.matches||!onScreen||document.hidden||Date.now()<hold)return;
+  go((current()+1)%cards.length);
+ },T);
+})();
+
 /* ── Reveal: fade-up ao entrar na tela ── */
 (function(){
  if(!('IntersectionObserver' in window))return;
