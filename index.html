@@ -25,15 +25,22 @@ h2{font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:16px}
 .sub{color:var(--soft);font-size:17px;max-width:640px}
 .center{text-align:center}.center .sub{margin-inline:auto}
 
-/* Marcação visível de dados a preencher — remover antes de publicar */
-.ph{background:#fff1b8;color:#5c4300;border:1px dashed #c79a00;border-radius:4px;padding:0 5px;font-family:Montserrat,Arial,sans-serif;font-size:.92em;font-weight:600;font-style:normal;letter-spacing:0}
-
 .top{background:#000;color:#fff;text-align:center;font-weight:600;letter-spacing:.5px;padding:11px 16px;font-size:14px}
 
-.btn{display:inline-block;text-align:center;background:var(--btn);color:#fff;text-decoration:none;font-weight:700;letter-spacing:1px;padding:18px 28px;border-radius:12px;font-size:16px;box-shadow:0 8px 24px rgba(138,103,49,.35);transition:background .2s}
-.btn:hover{background:var(--btn-h)}
+/* ── Botão com transições e pulso ── */
+.btn{display:inline-block;text-align:center;background:var(--btn);color:#fff;text-decoration:none;font-weight:700;letter-spacing:1px;padding:18px 28px;border-radius:12px;font-size:16px;box-shadow:0 8px 24px rgba(138,103,49,.35);transition:background .25s,transform .2s,box-shadow .25s}
+.btn:hover{background:var(--btn-h);transform:translateY(-2px);box-shadow:0 12px 32px rgba(138,103,49,.45)}
+.btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(138,103,49,.3)}
 .btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .micro{font-size:13px;color:var(--soft);margin-top:10px}
+
+/* ── Animação de entrada (fade-up) ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:none}
+.reveal-d1{transition-delay:.1s}
+.reveal-d2{transition-delay:.2s}
+.reveal-d3{transition-delay:.3s}
+.reveal-d4{transition-delay:.4s}
 
 /* 1. Hero */
 .hero{padding:56px 0 64px}
@@ -42,21 +49,28 @@ h2{font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:16px}
 .hero h1 em{font-style:normal;color:var(--btn)}
 .hero .sub{font-size:18px;margin-bottom:22px}
 .facts{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
-.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600}
+.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;transition:transform .2s}
+.facts li:hover{transform:scale(1.04)}
 .hero-photo{border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(60,40,20,.25);background:var(--dark)}
 .hero-photo img{width:100%;aspect-ratio:1/1;object-fit:cover}
 .cap{font-size:13px;color:var(--soft);margin-top:10px;text-align:center}
 .cap a{color:var(--btn);font-weight:600}
-.hero-video{border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(60,40,20,.25);background:#fff}
+.hero-video{border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(60,40,20,.25);background:#000}
 .hero-video video{display:block;width:100%;border-radius:14px}
 
 /* 2. Resultados */
 .results{background:var(--card);border-block:1px solid var(--line)}
 .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
-.case{border-radius:12px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}
-.case img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.case{border-radius:12px;overflow:hidden;background:var(--bg);border:1px solid var(--line);transition:transform .3s,box-shadow .3s}
+.case:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(60,40,20,.18)}
+.case img{width:100%;aspect-ratio:1/1;object-fit:cover;transition:transform .4s}
+.case:hover img{transform:scale(1.03)}
 .case figcaption{padding:10px 12px;font-size:13px;color:var(--soft)}
 .swipe{display:none;font-size:13px;color:var(--soft);margin-top:12px;text-align:center}
+/* Indicadores do carrossel mobile */
+.dots{display:none;justify-content:center;gap:8px;margin-top:14px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .3s,transform .3s}
+.dot.active{background:var(--btn);transform:scale(1.3)}
 
 /* 3 e 4. Blocos de confiança */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
@@ -83,7 +97,8 @@ h2{font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:16px}
 
 /* 6. Como funciona */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;list-style:none;padding:0}
-.steps li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px}
+.steps li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;transition:transform .3s,box-shadow .3s}
+.steps li:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(60,40,20,.12)}
 .n{font-family:var(--serif);font-size:34px;color:var(--gold);line-height:1;margin-bottom:10px}
 .steps b{display:block;margin-bottom:4px;font-size:16px}
 .steps span{font-size:15px;color:var(--soft)}
@@ -97,12 +112,13 @@ h2{font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:16px}
 /* 8. FAQ */
 .faq details{border-top:1px solid var(--line);padding:4px 0}
 .faq details:last-child{border-bottom:1px solid var(--line)}
-.faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;font-weight:600;font-size:17px;position:relative}
+.faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;font-weight:600;font-size:17px;position:relative;transition:color .2s}
+.faq summary:hover{color:var(--btn)}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:'+';position:absolute;right:4px;top:10px;font-size:26px;font-weight:400;color:var(--btn)}
-.faq details[open] summary::after{content:'–'}
+.faq summary::after{content:'+';position:absolute;right:4px;top:10px;font-size:26px;font-weight:400;color:var(--btn);transition:transform .3s}
+.faq details[open] summary::after{content:'–';transform:rotate(180deg)}
 .faq summary:focus-visible{outline:3px solid var(--btn);outline-offset:2px}
-.faq details p{padding:0 0 18px;color:var(--soft)}
+.faq details p{padding:0 0 18px;color:var(--soft);animation:fadeIn .3s ease}
 
 /* 9. Fechamento */
 .closing{text-align:center;padding-bottom:88px}
@@ -111,123 +127,148 @@ h2{font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:16px}
 
 footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px;border-top:1px solid var(--line)}
 
-/* Botão fixo no celular */
+/* ── Pulso no botão de CTA do hero ── */
+@keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(138,103,49,.35)}50%{box-shadow:0 8px 32px rgba(138,103,49,.55),0 0 0 8px rgba(138,103,49,.1)}}
+.hero .btn{animation:pulse 2.5s ease-in-out infinite}
+.hero .btn:hover{animation:none}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* ── Botão fixo no celular ── */
 .sticky{display:none}
 
 @media (max-width:860px){
  section{padding:52px 0}
  .hero{padding:32px 0 44px}
- .hero-grid,.split{grid-template-columns:1fr;gap:26px}
- .hero h1{margin:10px 0 14px}
- .hero .sub{font-size:16px;margin-bottom:16px}
- .facts{margin-bottom:20px}.facts li{font-size:13px;padding:6px 12px}
- .hero .btn,.mid-cta .btn,.closing .btn{display:block}
- .cases{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-20px;padding-inline:20px;scrollbar-width:none}
+ .hero-grid,.split{grid-template-columns:1fr;gap:22px}
+ .hero-grid>figure{order:-1}
+ .hero h1{margin:10px 0 14px;font-size:clamp(28px,7vw,40px)}
+ .hero .sub{font-size:15px;margin-bottom:14px}
+ .facts{margin-bottom:18px;gap:6px}.facts li{font-size:12px;padding:6px 12px}
+ .hero .btn,.mid-cta .btn,.closing .btn{display:block;font-size:15px;padding:16px 20px}
+ .cases{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-20px;padding-inline:20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
  .cases::-webkit-scrollbar{display:none}
- .case{flex:0 0 80%;scroll-snap-align:center}
+ .case{flex:0 0 82%;scroll-snap-align:center;transition:none}
+ .case:hover{transform:none;box-shadow:none}
+ .case:hover img{transform:none}
  .swipe{display:block}
+ .dots{display:flex}
  .fit{grid-template-columns:1fr}
  .steps{grid-template-columns:1fr;gap:12px}
  .steps li{display:grid;grid-template-columns:40px 1fr;column-gap:12px;padding:18px}
  .steps .n{grid-row:span 2;margin:0}
  .doc-photo{aspect-ratio:4/3}
- .price{padding:32px 22px}
- .sticky{display:block;position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(244,239,233,.96);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s}
+ .price{padding:28px 20px;border-radius:12px}
+ .hero-video{border-radius:10px}
+ .faq summary{font-size:16px;padding:14px 36px 14px 0}
+ h2{font-size:clamp(24px,6vw,34px)}
+ .sticky{display:block;position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(244,239,233,.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s cubic-bezier(.16,1,.3,1)}
  .sticky.on{transform:none}
- .sticky .btn{display:block;padding:15px 16px;font-size:15px;box-shadow:none}
+ .sticky .btn{display:block;padding:15px 16px;font-size:15px;box-shadow:none;animation:none}
  footer{padding-bottom:96px}
 }
-@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+@media (max-width:380px){
+ .hero h1{font-size:26px}
+ .hero .sub{font-size:14px}
+ .case{flex:0 0 90%}
+}
+
+@media (prefers-reduced-motion:reduce){
+ *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+ .reveal{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
 
-<!-- 0. Barra de escassez concreta -->
+<!-- 0. Barra de escassez -->
 <div class="top">Vagas limitadas · seleção por avaliação do caso</div>
 
 <main>
 
-<!-- 1. HERO: benefício + procedimento + local + datas + botão na primeira dobra -->
+<!-- 1. HERO -->
 <section class="hero">
  <div class="wrap hero-grid">
   <div>
-   <div class="eyebrow">Paciente modelo · Dr. Ritchie</div>
-   <h1>Realize o seu procedimento pagando <em>apenas o custo do material</em></h1>
-   <p class="sub">Vagas de paciente modelo na imersão Além do Óbvio, do Dr. Ritchie. O procedimento é realizado por um aluno, com a supervisão dele.</p>
-   <ul class="facts">
+   <div class="eyebrow reveal">Paciente modelo · Dr. Ritchie</div>
+   <h1 class="reveal reveal-d1">Realize o seu procedimento pagando <em>apenas o custo do material</em></h1>
+   <p class="sub reveal reveal-d2">Vagas de paciente modelo na imersão Além do Óbvio, do Dr. Ritchie. O procedimento é realizado por um aluno, com a supervisão dele.</p>
+   <ul class="facts reveal reveal-d2">
     <li>5 e 6 de dezembro</li>
     <li>Cidade Jardim, São Paulo</li>
     <li>Você paga só o material</li>
    </ul>
-   <a class="btn" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR A UMA VAGA</a>
-   <p class="micro">Você fala com a nossa assistente pelo WhatsApp.</p>
+   <a class="btn reveal reveal-d3" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR A UMA VAGA</a>
+   <p class="micro reveal reveal-d3">Você fala com a nossa assistente pelo WhatsApp.</p>
   </div>
-  <figure>
+  <figure class="reveal reveal-d1">
    <div class="hero-video"><video controls loop playsinline preload="auto" poster="paciente-modelo.jpg"><source src="video.mp4" type="video/mp4"/>Seu navegador não suporta vídeo.</video></div>
    <figcaption class="cap">Resultado real, realizado durante o curso.</figcaption>
   </figure>
  </div>
 </section>
 
-<!-- 2. RESULTADOS: prova em grade, todos os casos visíveis -->
+<!-- 2. RESULTADOS -->
 <section class="results" id="resultados">
  <div class="wrap">
   <div class="center">
-   <div class="eyebrow">Resultados</div>
-   <h2>Pacientes modelo de edições anteriores</h2>
-   <p class="sub">Antes e depois reais, realizados durante o curso.</p>
+   <div class="eyebrow reveal">Resultados</div>
+   <h2 class="reveal reveal-d1">Pacientes modelo de edições anteriores</h2>
+   <p class="sub reveal reveal-d1">Antes e depois reais, realizados durante o curso.</p>
   </div>
-  <div class="cases">
-   <figure class="case"><img alt="Antes e depois, paciente modelo 1" height="999" loading="lazy" src="paciente-modelo.jpg" width="1000"/></figure>
-   <figure class="case"><img alt="Antes e depois, paciente modelo 2" height="999" loading="lazy" src="caso-2.jpg" width="1000"/></figure>
-   <figure class="case"><img alt="Antes e depois, paciente modelo 3" height="998" loading="lazy" src="caso-3.jpg" width="1000"/></figure>
-   <figure class="case"><img alt="Antes e depois, paciente modelo 4" height="729" loading="lazy" src="caso-4.jpg" width="728"/></figure>
-   <figure class="case"><img alt="Antes e depois, paciente modelo 5" height="998" loading="lazy" src="caso-5.jpg" width="1000"/></figure>
-   <figure class="case"><img alt="Antes e depois, paciente modelo 6" height="297" loading="lazy" src="caso-6.jpg" width="279"/></figure>
+  <div class="cases" id="cases">
+   <figure class="case reveal"><img alt="Antes e depois, paciente modelo 1" height="999" loading="lazy" src="paciente-modelo.jpg" width="1000"/></figure>
+   <figure class="case reveal reveal-d1"><img alt="Antes e depois, paciente modelo 2" height="999" loading="lazy" src="caso-2.jpg" width="1000"/></figure>
+   <figure class="case reveal reveal-d2"><img alt="Antes e depois, paciente modelo 3" height="998" loading="lazy" src="caso-3.jpg" width="1000"/></figure>
+   <figure class="case reveal reveal-d3"><img alt="Antes e depois, paciente modelo 4" height="729" loading="lazy" src="caso-4.jpg" width="728"/></figure>
+   <figure class="case reveal reveal-d3"><img alt="Antes e depois, paciente modelo 5" height="998" loading="lazy" src="caso-5.jpg" width="1000"/></figure>
+   <figure class="case reveal reveal-d4"><img alt="Antes e depois, paciente modelo 6" height="297" loading="lazy" src="caso-6.jpg" width="279"/></figure>
   </div>
   <p class="swipe">Arraste para o lado para ver mais casos →</p>
+  <div class="dots" id="dots"></div>
  </div>
 </section>
 
-<!-- 3. POR QUE A PREÇO DE CUSTO: tira a desconfiança do preço -->
+<!-- 3. POR QUE A PREÇO DE CUSTO -->
 <section id="por-que">
  <div class="narrow center">
-  <div class="eyebrow">Por que a preço de custo</div>
-  <h2>O que é ser paciente modelo</h2>
-  <p class="sub">Nos dias 5 e 6 de dezembro acontece a imersão Além do Óbvio, curso do Dr. Ritchie. Os procedimentos são realizados durante o curso, em pacientes reais. Por isso, o paciente modelo paga somente o material utilizado no procedimento.</p>
+  <div class="eyebrow reveal">Por que a preço de custo</div>
+  <h2 class="reveal reveal-d1">O que é ser paciente modelo</h2>
+  <p class="sub reveal reveal-d2">Nos dias 5 e 6 de dezembro acontece a imersão Além do Óbvio, curso do Dr. Ritchie. Os procedimentos são realizados durante o curso, em pacientes reais. Por isso, o paciente modelo paga somente o material utilizado no procedimento.</p>
  </div>
 </section>
 
-<!-- 4. QUEM REALIZA: resolve a maior objeção -->
+<!-- 4. QUEM REALIZA -->
 <section class="dark" id="quem-realiza">
  <div class="narrow center">
-  <div class="eyebrow">Quem cuida de você</div>
-  <h2>Quem realiza o procedimento</h2>
-  <p class="sub">O procedimento é realizado por um aluno do Dr. Ritchie, com a supervisão dele.</p>
-  <p class="sub" style="margin-top:14px"><b>Local:</b> Av. Magalhães de Castro, 4800, Cidade Jardim, São Paulo</p>
-  <div class="mid-cta"><a class="btn" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR A UMA VAGA</a></div>
+  <div class="eyebrow reveal">Quem cuida de você</div>
+  <h2 class="reveal reveal-d1">Quem realiza o procedimento</h2>
+  <p class="sub reveal reveal-d2">O procedimento é realizado por um aluno do Dr. Ritchie, com a supervisão dele.</p>
+  <p class="sub reveal reveal-d2" style="margin-top:14px"><b>Local:</b> Av. Magalhães de Castro, 4800, Cidade Jardim, São Paulo</p>
+  <div class="mid-cta reveal reveal-d3"><a class="btn" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR A UMA VAGA</a></div>
  </div>
 </section>
 
-<!-- 6. COMO FUNCIONA: da candidatura ao dia do procedimento -->
+<!-- 6. COMO FUNCIONA -->
 <section class="results" id="como-funciona">
  <div class="wrap">
   <div class="center">
-   <div class="eyebrow">Passo a passo</div>
-   <h2>Como funciona</h2>
+   <div class="eyebrow reveal">Passo a passo</div>
+   <h2 class="reveal reveal-d1">Como funciona</h2>
   </div>
   <ol class="steps">
-   <li><div class="n">1</div><b>Candidate-se pelo WhatsApp</b><span>Toque no botão, fale com a nossa assistente virtual.</span></li>
-   <li><div class="n">2</div><b>Avaliação do seu caso</b><span>A equipe avalia a sua candidatura.</span></li>
-   <li><div class="n">3</div><b>Valor e confirmação</b><span>Selecionado, você recebe o valor pelo WhatsApp, de forma clara e transparente, e reserva o seu lugar.</span></li>
+   <li class="reveal"><div class="n">1</div><b>Candidate-se pelo WhatsApp</b><span>Toque no botão, fale com a nossa assistente virtual.</span></li>
+   <li class="reveal reveal-d1"><div class="n">2</div><b>Avaliação do seu caso</b><span>A equipe avalia a sua candidatura.</span></li>
+   <li class="reveal reveal-d2"><div class="n">3</div><b>Valor e confirmação</b><span>Selecionado, você recebe o valor pelo WhatsApp, de forma clara e transparente, e reserva o seu lugar.</span></li>
   </ol>
  </div>
 </section>
 
-<!-- 7. INVESTIMENTO: segundo filtro -->
+<!-- 7. INVESTIMENTO -->
 <section id="investimento">
  <div class="narrow">
-  <div class="price">
+  <div class="price reveal">
    <div class="eyebrow" style="color:#d9b77c">Investimento</div>
    <h2>Você paga apenas o material</h2>
    <p>O paciente modelo paga somente o material utilizado no procedimento.</p>
@@ -236,27 +277,27 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
  </div>
 </section>
 
-<!-- 8. FAQ: objeções restantes -->
+<!-- 8. FAQ -->
 <section class="faq" id="perguntas" style="padding-top:0">
  <div class="narrow">
-  <div class="center" style="margin-bottom:24px">
+  <div class="center reveal" style="margin-bottom:24px">
    <div class="eyebrow">Dúvidas</div>
    <h2>Perguntas frequentes</h2>
   </div>
-  <details><summary>Quem vai realizar o meu procedimento?</summary><p>Um aluno do Dr. Ritchie, com a supervisão dele.</p></details>
-  <details><summary>Onde acontece?</summary><p>Av. Magalhães de Castro, 4800, Cidade Jardim, São Paulo, nos dias 5 e 6 de dezembro.</p></details>
-  <details><summary>Quanto vou pagar?</summary><p>Você paga somente o material utilizado no seu procedimento. O valor é informado individualmente pelo WhatsApp.</p></details>
+  <details class="reveal"><summary>Quem vai realizar o meu procedimento?</summary><p>Um aluno do Dr. Ritchie, com a supervisão dele.</p></details>
+  <details class="reveal reveal-d1"><summary>Onde acontece?</summary><p>Av. Magalhães de Castro, 4800, Cidade Jardim, São Paulo, nos dias 5 e 6 de dezembro.</p></details>
+  <details class="reveal reveal-d2"><summary>Quanto vou pagar?</summary><p>Você paga somente o material utilizado no seu procedimento. O valor é informado individualmente pelo WhatsApp.</p></details>
  </div>
 </section>
 
 <!-- 9. FECHAMENTO -->
 <section class="closing results">
  <div class="narrow">
-  <div class="eyebrow">5 e 6 de dezembro</div>
-  <h2>Candidate-se a uma vaga de paciente modelo</h2>
-  <p class="sub">As vagas são limitadas. A seleção é feita pela avaliação do seu caso, pelo WhatsApp.</p>
-  <a class="btn" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR A UMA VAGA</a>
-  <p class="micro">Você fala com a nossa assistente pelo WhatsApp.</p>
+  <div class="eyebrow reveal">5 e 6 de dezembro</div>
+  <h2 class="reveal reveal-d1">Candidate-se a uma vaga de paciente modelo</h2>
+  <p class="sub reveal reveal-d2">As vagas são limitadas. A seleção é feita pela avaliação do seu caso, pelo WhatsApp.</p>
+  <a class="btn reveal reveal-d3" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR A UMA VAGA</a>
+  <p class="micro reveal reveal-d3">Você fala com a nossa assistente pelo WhatsApp.</p>
  </div>
 </section>
 
@@ -267,7 +308,17 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
 <div class="sticky" id="sticky"><a class="btn" data-wa="1" href="https://wa.me/553196926557?text=Oi%2C%20quero%20me%20candidatar%20a%20paciente%20modelo%20na%20imers%C3%A3o%20de%205%20e%206%20de%20dezembro.">QUERO ME CANDIDATAR</a></div>
 
 <script>
-/* Botão fixo no celular: aparece depois que o botão do hero sai da tela e some no fechamento */
+/* ── Reveal: fade-up ao entrar na tela ── */
+(function(){
+ if(!('IntersectionObserver' in window))return;
+ var els=document.querySelectorAll('.reveal');
+ var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})
+ },{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+ els.forEach(function(el){io.observe(el)});
+})();
+
+/* ── Botão fixo no celular ── */
 (function(){
  var s=document.getElementById('sticky'),h=document.querySelector('.hero .btn'),c=document.querySelector('.closing .btn');
  if(!s||!h||!('IntersectionObserver' in window))return;
@@ -275,9 +326,27 @@ footer{text-align:center;font-size:12px;color:var(--soft);padding:28px 20px 40px
  new IntersectionObserver(function(e){hv=e[0].isIntersecting;u()}).observe(h);
  new IntersectionObserver(function(e){cv=e[0].isIntersecting;u()}).observe(c);
 })();
+
+/* ── Indicadores do carrossel mobile ── */
+(function(){
+ var c=document.getElementById('cases'),d=document.getElementById('dots');
+ if(!c||!d||!('IntersectionObserver' in window))return;
+ var cards=c.querySelectorAll('.case'),n=cards.length;
+ for(var i=0;i<n;i++){var dot=document.createElement('span');dot.className='dot';if(i===0)dot.classList.add('active');d.appendChild(dot)}
+ var dots=d.querySelectorAll('.dot');
+ var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+   if(e.isIntersecting){
+    var idx=[].indexOf.call(cards,e.target);
+    dots.forEach(function(dt,j){dt.classList.toggle('active',j===idx)})
+   }
+  })
+ },{root:c,threshold:.6});
+ cards.forEach(function(card){io.observe(card)});
+})();
 </script>
 
-<!-- Pixel e UTMs: mantidos da página atual; só a mensagem do WhatsApp mudou -->
+<!-- Pixel e UTMs -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','28204701035866392');fbq('track','PageView');
